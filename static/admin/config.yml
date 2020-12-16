@@ -7,8 +7,26 @@ public_folder: /img
 
 collections:
   - name: 'topic'
-    label: 'Topic'
+    label: 'topic'
+    identifier_field: id
     folder: 'content/topic'
+    create: true
+    slug: 'index'
+    media_folder: ''
+    public_folder: ''
+    path: '{{title}}/index'
+    editor:
+      preview: false
+    fields:
+      - { label: "Id", name: "id", widget: "hidden", default: '{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}-{{last}}-{{first}}'}
+      - { label: 'Title', name: 'title', widget: 'string' }
+      - { label: 'Publish Date', name: 'date', widget: 'datetime' }
+      - { label: "Featured Image", name: "thumbnail", widget: "image"}
+      - { label: 'Description', name: 'description', widget: 'string' }
+      - { label: 'Body', name: 'body', widget: 'markdown' }
+  - name: 'lesson'
+    label: 'Lesson'
+    folder: 'content/lesson'
     create: true
     slug: 'index'
     media_folder: ''
@@ -19,6 +37,14 @@ collections:
     fields:
       - { label: 'Title', name: 'title', widget: 'string' }
       - { label: 'Publish Date', name: 'date', widget: 'datetime' }
+      - label: "Topic"
+        name: "topic"
+        widget: "relation"
+        collection: "topic"
+        search_fields: ["title"]
+        display_fields: ["title"]
+        value_field: "id"
       - { label: "Featured Image", name: "thumbnail", widget: "image"}
       - { label: 'Description', name: 'description', widget: 'string' }
       - { label: 'Body', name: 'body', widget: 'markdown' }
+      
