@@ -1,6 +1,7 @@
 ---
 topicId: 870fd2f2-8504-4416-bfc1-d6e27094fb71
 Course type: lesson
+courseType: lesson
 title: Lesson 1
 summary: We are going learn basic about HTML
 ---
