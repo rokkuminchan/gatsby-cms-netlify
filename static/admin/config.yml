@@ -7,8 +7,7 @@ public_folder: /img
 
 collections:
   - name: 'topic'
-    label: 'topic'
-    identifier_field: id
+    label: 'Topic'
     folder: 'content/topic'
     create: true
     slug: 'index'
@@ -18,7 +17,7 @@ collections:
     editor:
       preview: false
     fields:
-      - { label: "Id", name: "id", widget: "hidden", default: '{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}-{{last}}-{{first}}'}
+      - { label: 'Id', name: 'id', widget: 'uuid' }
       - { label: 'Title', name: 'title', widget: 'string' }
       - { label: 'Publish Date', name: 'date', widget: 'datetime' }
       - { label: "Featured Image", name: "thumbnail", widget: "image"}
