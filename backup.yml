@@ -11,12 +11,15 @@ collections:
     folder: 'content/topic'
     create: true
     slug: 'index'
-    media_folder: 'content/assets'
+    media_folder: ''
     public_folder: ''
     path: '{{title}}/index'
+    editor:
+      preview: false
     fields:
       - { label: 'Id', name: 'id', widget: 'uuid' }
       - { label: 'Title', name: 'title', widget: 'string' }
+      - { label: 'Publish Date', name: 'date', widget: 'datetime' }
       - { label: "Thumbnail", name: "thumbnail", widget: "image"}
       - { label: 'Summary', name: 'summary', widget: 'string' }
       - { label: 'Body', name: 'body', widget: 'markdown' }
@@ -25,10 +28,14 @@ collections:
     folder: 'content/lesson'
     create: true
     slug: 'index'
-    media_folder: 'content/assets'
+    media_folder: ''
     public_folder: ''
     path: '{{title}}/index'
+    editor:
+      preview: false
     fields:
+      - { label: 'Title', name: 'title', widget: 'string' }
+      - { label: 'Publish Date', name: 'date', widget: 'datetime' }
       - label: "Topic"
         name: "topicId"
         widget: "relation"
@@ -36,7 +43,7 @@ collections:
         search_fields: ["title"]
         display_fields: ["title"]
         value_field: "id"
-      - { label: 'Title', name: 'title', widget: 'string' }
+      - { label: "Images", name: "imageCollection", widget: "image", media_library: {config: { multiple: true }}}
       - { label: 'Summary', name: 'summary', widget: 'string' }
       - { label: 'Body', name: 'body', widget: 'markdown' }
       
