@@ -4,27 +4,26 @@ const { createFilePath } = require(`gatsby-source-filesystem`)
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
 
-  // Define a template for blog post
-  const blogPost = path.resolve(`./src/templates/blog-post.js`)
-
   // Get all markdown blog posts sorted by date
-  const result = await graphql(
-    `
-      {
-        allMarkdownRemark(
-          sort: { fields: [frontmatter___date], order: ASC }
-          limit: 1000
-        ) {
-          nodes {
+  const result = await graphql(`
+    {
+      allMarkdownRemark {
+        nodes {
+          frontmatter {
             id
-            fields {
-              slug
-            }
+            courseType
+            topicId
+            thumbnail
+            summary
+            title
+          }
+          fields {
+            slug
           }
         }
       }
-    `
-  )
+    }
+    `)
 
   if (result.errors) {
     reporter.panicOnBuild(
@@ -34,43 +33,33 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     return
   }
 
-  const posts = result.data.allMarkdownRemark.nodes
+  const results = result.data.allMarkdownRemark.nodes
+
+  console.log(results);
 
   // Create blog posts pages
   // But only if there's at least one markdown file found at "content/blog" (defined in gatsby-config.js)
   // `context` is available in the template as a prop and as a variable in GraphQL
 
-  if (posts.length > 0) {
-    posts.forEach((post, index) => {
-      const previousPostId = index === 0 ? null : posts[index - 1].id
-      const nextPostId = index === posts.length - 1 ? null : posts[index + 1].id
-
-      createPage({
-        path: post.fields.slug,
-        component: blogPost,
-        context: {
-          id: post.id,
-          previousPostId,
-          nextPostId,
-        },
-      })
-    })
+  if (results.length > 0) {
+    createAllLessonPages(results, createPage);
+    // createLessonPages(results, graphql, createPage);
   }
 }
 
-exports.onCreateNode = ({ node, actions, getNode }) => {
-  const { createNodeField } = actions
+// exports.onCreateNode = ({ node, actions, getNode }) => {
+//   const { createNodeField } = actions
 
-  if (node.internal.type === `MarkdownRemark`) {
-    const value = createFilePath({ node, getNode })
+//   if (node.internal.type === `MarkdownRemark`) {
+//     const value = createFilePath({ node, getNode })
 
-    createNodeField({
-      name: `slug`,
-      node,
-      value,
-    })
-  }
-}
+//     createNodeField({
+//       name: `slug`,
+//       node,
+//       value,
+//     })
+//   }
+// }
 
 exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes } = actions
@@ -112,4 +101,50 @@ exports.createSchemaCustomization = ({ actions }) => {
       slug: String
     }
   `)
+}
+
+function normalize(str) {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").split(" ").join("-");
+}
+
+function createLessonPages(data, createPage) {
+  const lessonDetailTemplate = path.resolve(`./src/templates/lesson-detail.js`)
+
+  const courses = data.filter(node => node.frontmatter.courseType === "course");
+  const lessons = data.filter(node => node.frontmatter.courseType === "lesson");
+
+  lessons.forEach((lesson, index) => {
+    const course = courses.find(c => c.frontmatter.id === lesson.frontmatter.topicId);
+    console.log(course);
+    const previousLessonId = index === 0 ? null : lessons[index - 1].frontmatter.id;
+    const nextLessonId = index === lessons.length - 1 ? null : lessons[index + 1].frontmatter.id;
+
+    createPage({
+      path: `/course/${normalize(course.frontmatter.title)}/lesson/${normalize(lesson.frontmatter.title)}`,
+      component: lessonDetailTemplate,
+      context: {
+        id: lesson.frontmatter.id,
+        previousPostId: previousLessonId,
+        nextPostId: nextLessonId,
+      },
+    })
+  })
+}
+
+function createAllLessonPages(data, createPage) {
+  const allLessonTemplate = path.resolve(`./src/templates/all-lessons.js`);
+  const courses = data.filter(node => node.frontmatter.courseType === "course");
+
+  console.log(courses);
+
+  courses.forEach(course => {
+    createPage({
+      path: `/course/${normalize(course.frontmatter.title)}`,
+      component: allLessonTemplate,
+      context: {
+        courseType: "lesson",
+        topicId: course.frontmatter.id
+      },
+    })
+  });
 }

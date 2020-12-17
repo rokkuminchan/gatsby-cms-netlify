@@ -1,6 +1,5 @@
 ---
 topicId: 870fd2f2-8504-4416-bfc1-d6e27094fb71
-Course type: lesson
 id: 022dacbe-9ff2-4eb4-b0b9-7116279c113f
 courseType: lesson
 title: Lesson-1

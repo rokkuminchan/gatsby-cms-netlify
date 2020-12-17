@@ -11,24 +11,31 @@ collections:
     folder: 'content/topic'
     create: true
     slug: 'index'
-    media_folder: 'content/assets'
+    media_folder: '../../assets'
     public_folder: ''
-    path: '{{title}}/index'
+    path: '{{courseType}}/{{title}}'
     fields:
       - { label: 'Id', name: 'id', widget: 'uuid' }
+      - label: "Course type"
+        name: "courseType"
+        widget: "select"
+        options:
+          - { label: "Lesson", value: "lesson" }
+          - { label: "Course", value: "course" }
+          - { label: "Vocabulary", value: "vocabulary" }
       - { label: 'Title', name: 'title', widget: 'string' }
       - { label: "Thumbnail", name: "thumbnail", widget: "image"}
       - { label: 'Summary', name: 'summary', widget: 'string' }
-      - { label: 'Body', name: 'body', widget: 'markdown' }
   - name: 'lesson'
     label: 'Lesson'
     folder: 'content/lesson'
     create: true
     slug: 'index'
-    media_folder: 'content/assets'
+    media_folder: '../../assets'
     public_folder: ''
-    path: '{{title}}/index'
+    path: '{{courseType}}/{{title}}'
     fields:
+      - { label: 'Id', name: 'id', widget: 'uuid' }
       - label: "Topic"
         name: "topicId"
         widget: "relation"
@@ -36,7 +43,15 @@ collections:
         search_fields: ["title"]
         display_fields: ["title"]
         value_field: "id"
+      - label: "Course type"
+        name: "courseType"
+        widget: "select"
+        options:
+          - { label: "Lesson", value: "lesson" }
+          - { label: "Course", value: "course" }
+          - { label: "Vocabulary", value: "vocabulary" }
       - { label: 'Title', name: 'title', widget: 'string' }
       - { label: 'Summary', name: 'summary', widget: 'string' }
       - { label: 'Body', name: 'body', widget: 'markdown' }
+
       
