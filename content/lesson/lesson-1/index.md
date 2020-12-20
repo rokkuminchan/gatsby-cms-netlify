@@ -5,14 +5,15 @@ courseType: lesson
 title: Lesson-1
 summary: We are going learn basic about HTML
 ---
+
 We are going learn basic about HTML
 
 ![image](指令-予約-作成画面.jpg "image")
 
 ```javascript
-var a,b;
+var a, b
 
-function Add(num1, num2){
-  return num1 + num2; 
+function Add(num1, num2) {
+  return num1 + num2
 }
 ```

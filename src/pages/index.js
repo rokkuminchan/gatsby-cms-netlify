@@ -10,7 +10,6 @@ const HomeIndex = ({ data }) => {
 
   return (
     <Layout location="">
-      <SEO title="All topics" />
       {
         courses.map((course, index) => {
           return <section key={index}>

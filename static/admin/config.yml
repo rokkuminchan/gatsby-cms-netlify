@@ -6,16 +6,49 @@ media_folder: static/img
 public_folder: /img
 
 collections:
-  - name: 'topic'
-    label: 'Topic'
-    folder: 'content/topic'
+  - name: members
+    label: Members
+    extension: "json"
+    folder: src/data/members
+    media_folder: ../../images
+    slug: "{{title}}"
+    editor:
+      preview: false
     create: true
-    slug: 'index'
-    media_folder: '../../assets'
-    public_folder: ''
-    path: '{{courseType}}/{{title}}'
     fields:
-      - { label: 'Id', name: 'id', widget: 'uuid' }
+      - { label: "Id", name: "id", widget: "uuid" }
+      - label: "Member type"
+        name: "memberType"
+        widget: "select"
+        options:
+          - { label: "Free", value: "free" }
+          - { label: "VIP", value: "vip" }
+          - { label: "GOLD", value: "gold" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Member name", name: "memberName", widget: "string" }
+      - { label: "Thumbnail", name: "thumbnail", widget: "image" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Blog post content", name: "body", widget: "markdown" }
+      - label: "Code"
+        name: "code"
+        widget: "code"
+      - label: "Topic"
+        name: "topicId"
+        widget: "relation"
+        collection: "topic"
+        search_fields: ["title"]
+        display_fields: ["title"]
+        value_field: "id"
+  - name: "topic"
+    label: "Topic"
+    folder: "content/topic"
+    create: true
+    slug: "index"
+    media_folder: "../../assets"
+    public_folder: ""
+    path: "{{title}}/index"
+    fields:
+      - { label: "Id", name: "id", widget: "uuid" }
       - label: "Course type"
         name: "courseType"
         widget: "select"
@@ -23,19 +56,19 @@ collections:
           - { label: "Lesson", value: "lesson" }
           - { label: "Course", value: "course" }
           - { label: "Vocabulary", value: "vocabulary" }
-      - { label: 'Title', name: 'title', widget: 'string' }
-      - { label: "Thumbnail", name: "thumbnail", widget: "image"}
-      - { label: 'Summary', name: 'summary', widget: 'string' }
-  - name: 'lesson'
-    label: 'Lesson'
-    folder: 'content/lesson'
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Thumbnail", name: "thumbnail", widget: "image" }
+      - { label: "Summary", name: "summary", widget: "string" }
+  - name: "lesson"
+    label: "Lesson"
+    folder: "content/lesson"
     create: true
-    slug: 'index'
-    media_folder: '../../assets'
-    public_folder: ''
-    path: '{{courseType}}/{{title}}'
+    slug: "index"
+    media_folder: "../../assets"
+    public_folder: ""
+    path: "{{title}}/index"
     fields:
-      - { label: 'Id', name: 'id', widget: 'uuid' }
+      - { label: "Id", name: "id", widget: "uuid" }
       - label: "Topic"
         name: "topicId"
         widget: "relation"
@@ -50,8 +83,35 @@ collections:
           - { label: "Lesson", value: "lesson" }
           - { label: "Course", value: "course" }
           - { label: "Vocabulary", value: "vocabulary" }
-      - { label: 'Title', name: 'title', widget: 'string' }
-      - { label: 'Summary', name: 'summary', widget: 'string' }
-      - { label: 'Body', name: 'body', widget: 'markdown' }
-
-      
+      - { label: "Lesson title", name: "lessonTitle", widget: "string" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Summary", name: "summary", widget: "string" }
+      - { label: "Body", name: "body", widget: "markdown" }
+  - label: "Blog in English"
+    name: "english_posts"
+    folder: "_posts"
+    create: true
+    filter: { field: "language", value: "en" }
+    fields:
+      - {
+          label: "Language",
+          name: "language",
+          widget: "select",
+          options: ["en", "es"],
+        }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Content", name: "body", widget: "markdown" }
+  - label: "Blog en Español"
+    name: "spanish_posts"
+    folder: "_posts"
+    create: true
+    filter: { field: "language", value: "es" }
+    fields:
+      - {
+          label: "Lenguaje",
+          name: "language",
+          widget: "select",
+          options: ["en", "es"],
+        }
+      - { label: "Titulo", name: "title", widget: "string" }
+      - { label: "Contenido", name: "body", widget: "markdown" }
